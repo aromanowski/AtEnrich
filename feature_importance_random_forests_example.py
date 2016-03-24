@@ -1,12 +1,28 @@
 from sklearn.ensemble import ExtraTreesClassifier
+import numpy as np
+import random
+import MySQLdb
+
+db = MySQLdb.connect("localhost","root","zoomzoom","GeneListDB")
+cursor = db.cursor()
 
 #test input gene list
-input_gene_list = ['AT1G09570','AT5G67560', 'AT5G67620', 'AT5G67620']
+#get all locus_ids appearing in gene_lists
+cursor.execute("""SELECT locus_id FROM gene_lists;""")
+input_gene_list = [x[0] for x in cursor.fetchall()]
+#select subsample of list
+nGenes = 1500
+random.seed(0)
+input_gene_list = random.sample(input_gene_list,nGenes)
 #dummy classification
-y = [0,1,1,0]
+list_name = 'hornitschek2012_PIF5_chip_seq'
+cursor.execute("""SELECT locus_id FROM gene_lists WHERE list_name=%s;""",[list_name])
+positive_classification_list = [x[0] for x in cursor.fetchall()]
+y = [int(x in positive_classification_list) for x in input_gene_list]
 
-#features to rank
-gene_list_names = ['chen2014_phyA_chip_seq']
+#get list of all other gene lists to rank
+cursor.execute("""SELECT list_name FROM list_info WHERE list_name!=%s;""",[list_name])
+gene_list_names = [x[0] for x in cursor.fetchall()]
 
 X = generate_feature_matrix(input_gene_list,gene_list_names)
 
