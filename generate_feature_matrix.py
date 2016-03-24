@@ -31,4 +31,4 @@ def generate_feature_matrix(input_gene_list,gene_list_names):
     feature_matrix = np.array(feature_matrix).transpose()
     return feature_matrix
 
-print generate_feature_matrix(input_gene_list,gene_list_names)
+#print generate_feature_matrix(input_gene_list,gene_list_names)
