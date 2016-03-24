@@ -2,6 +2,7 @@ from sklearn.ensemble import ExtraTreesClassifier
 import numpy as np
 import random
 import MySQLdb
+from generate_feature_matrix import generate_feature_matrix
 
 db = MySQLdb.connect("localhost","root","zoomzoom","GeneListDB")
 cursor = db.cursor()
@@ -47,5 +48,6 @@ figure()
 title("Feature importances")
 bar(range(X.shape[1]), importances[indices],
     color="r", yerr=std[indices], align="center")
-xticks(range(X.shape[1]), indices)
+xticks(range(X.shape[1]), [gene_list_names[x] for x in indices],rotation=90)
 xlim([-1, X.shape[1]])
+tight_layout()
