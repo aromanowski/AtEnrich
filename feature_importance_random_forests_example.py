@@ -51,3 +51,5 @@ bar(range(X.shape[1]), importances[indices],
 xticks(range(X.shape[1]), [gene_list_names[x] for x in indices],rotation=90)
 xlim([-1, X.shape[1]])
 tight_layout()
+
+db.close()
