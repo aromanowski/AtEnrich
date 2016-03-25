@@ -6,14 +6,6 @@ import MySQLdb
 db = MySQLdb.connect("localhost","root","zoomzoom","GeneListDB")
 cursor = db.cursor()
 
-#input gene list
-input_gene_list = ['AT1G09570','AT5G67560', 'AT5G67620', 'AT5G67620']
-
-#annotate these according to presence/absence in gene lists
-gene_list_names = ['chen2014_phyA_chip_seq']
-
-gene_list_name = gene_list_names[0]
-
 def generate_feature_matrix(input_gene_list,gene_list_names):
     feature_matrix = []
     
@@ -30,5 +22,3 @@ def generate_feature_matrix(input_gene_list,gene_list_names):
     
     feature_matrix = np.array(feature_matrix).transpose()
     return feature_matrix
-
-#print generate_feature_matrix(input_gene_list,gene_list_names)
