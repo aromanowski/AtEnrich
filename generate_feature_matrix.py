@@ -11,7 +11,7 @@ def generate_feature_matrix(input_gene_list,gene_list_names):
     
     for list_name in gene_list_names:
         sql_query = """SELECT locus_id FROM gene_lists WHERE list_name=%s;"""
-        cursor.execute(sql_query,list_name)
+        cursor.execute(sql_query,[list_name])
         result = cursor.fetchall()
         returned_gene_list = [x[0] for x in result]
         
@@ -22,5 +22,3 @@ def generate_feature_matrix(input_gene_list,gene_list_names):
     
     feature_matrix = np.array(feature_matrix).transpose()
     return feature_matrix
-
-db.close()
