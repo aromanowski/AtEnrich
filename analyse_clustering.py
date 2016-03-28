@@ -24,4 +24,7 @@ for idx,classification in enumerate(clustering_classifications):
     rank_features(gene_list,classification,gene_list_names)
     title(idx)
 
+#rank_features(gene_list,clustering_classifications[4],gene_list_names)
+
+
 db.close()
