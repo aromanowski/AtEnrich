@@ -1,10 +1,10 @@
 from sklearn.ensemble import ExtraTreesClassifier
 import numpy as np
 import random
-import MySQLdb
+from connect_to_db import connect_to_db
 from generate_feature_matrix import generate_feature_matrix
 
-db = MySQLdb.connect("localhost","root","zoomzoom","GeneListDB")
+db = connect_to_db()
 cursor = db.cursor()
 
 #test input gene list

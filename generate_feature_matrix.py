@@ -1,9 +1,9 @@
 import pandas as pd
 import numpy as np
 import re
-import MySQLdb
+from connect_to_db import connect_to_db
 
-db = MySQLdb.connect("localhost","root","zoomzoom","GeneListDB")
+db = connect_to_db()
 cursor = db.cursor()
 
 def generate_feature_matrix(input_gene_list,gene_list_names):

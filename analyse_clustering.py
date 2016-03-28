@@ -1,10 +1,10 @@
 import numpy as np
 import pandas as pd
 from convert_clustering_to_classification import convert_clustering_to_classification
-import MySQLdb
 from rank_features import rank_features
+from connect_to_db import connect_to_db
 
-db = MySQLdb.connect("localhost","root","zoomzoom","GeneListDB")
+db = connect_to_db()
 cursor = db.cursor()
 
 #input cluster file
