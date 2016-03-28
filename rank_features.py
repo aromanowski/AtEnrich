@@ -3,12 +3,12 @@ import numpy as np
 from generate_feature_matrix import generate_feature_matrix
 from matplotlib.pyplot import *
 
-def rank_features(input_gene_list,binary_classification,gene_list_names):
+def rank_features(input_gene_list,binary_classification,gene_list_names,n_estimators=400):
     
     X = generate_feature_matrix(input_gene_list,gene_list_names)
     y = binary_classification
     
-    forest = ExtraTreesClassifier(n_estimators=350,
+    forest = ExtraTreesClassifier(n_estimators=n_estimators,
                                   random_state=0)
     
     forest.fit(X,y)
