@@ -20,11 +20,22 @@ clustering_classifications = convert_clustering_to_classification(cluster_list)
 cursor.execute("""SELECT list_name FROM list_info;""")
 gene_list_names = [x[0] for x in cursor.fetchall()]
 
-for idx,classification in enumerate(clustering_classifications):
-    rank_features(gene_list,classification,gene_list_names)
-    title(idx)
+#for idx,classification in enumerate(clustering_classifications):
+#    rank_features(gene_list,classification,gene_list_names,n_estimators=1000)
+#    title(idx)
 
-#rank_features(gene_list,clustering_classifications[4],gene_list_names)
+importances,std,indices = rank_features(gene_list,clustering_classifications[9],
+                                        gene_list_names,
+                                        n_estimators=2500,
+                                        max_features=4)
 
+# Plot the feature importances of the forest
+figure()
+title("Feature importances")
+barh(range(len(indices)), importances[indices],
+     color="r", xerr=std[indices], align="center")
+yticks(range(len(indices)), [gene_list_names[x] for x in indices])
+ylim([-1, len(indices)])
+tight_layout()
 
 db.close()
