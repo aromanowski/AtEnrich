@@ -1,4 +1,5 @@
 from sklearn.ensemble import ExtraTreesClassifier
+from scipy.stats import hypergeom
 import numpy as np
 from generate_feature_matrix import generate_feature_matrix
 from matplotlib.pyplot import *
@@ -32,3 +33,20 @@ def rank_features(input_gene_list,binary_classification,feature_matrix,n_estimat
         print("%d. feature %d (%f)" % (f + 1, indices[f], importances[indices[f]]))
     
     return importances,std,indices
+
+def rank_by_hypergeometric(binary_classification,feature_matrix):
+    
+    X = feature_matrix
+    y = binary_classification
+    nF = feature_matrix.shape[1]
+
+    pvals = np.ones(nF)
+
+    M = feature_matrix.shape[0] #total number of objects
+    n = sum(y) #number in class
+    for feature_idx in range(nF):
+        N = sum(X[:,feature_idx]) #number positive for this feature
+        k = sum(np.multiply(X[:,feature_idx],y))
+        pvals[feature_idx] = hypergeom.sf(k,M,n,N)
+    
+    return pvals
