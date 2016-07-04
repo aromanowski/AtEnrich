@@ -11,7 +11,7 @@ import sqlite3
 ###TODO - make into function, and call it from a script
 #def analyse_clustering(file,clusters_to_plot=None,gene_list_names=None,cluster_indices=None):
 
-db = connect_to_db()
+db = sqlite3.connect("GeneListDB.db")
 cursor = db.cursor()
 
 
