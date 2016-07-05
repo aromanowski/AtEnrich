@@ -1,9 +1,9 @@
 import pandas as pd
 import numpy as np
 import re
-from connect_to_db import connect_to_db
+import sqlite3
 
-db = connect_to_db()
+db = sqlite3.connect("GeneListDB.db")
 cursor = db.cursor()
 
 def generate_feature_matrix(input_gene_list,gene_list_names):
