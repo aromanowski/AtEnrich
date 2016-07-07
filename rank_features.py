@@ -25,13 +25,6 @@ def rank_features(input_gene_list,binary_classification,feature_matrix,n_estimat
                  axis=0)
     indices = np.argsort(importances)
     
-    
-    # Print the feature ranking
-    print("Feature ranking:")
-    
-    for f in range(X.shape[1]):
-        print("%d. feature %d (%f)" % (f + 1, indices[f], importances[indices[f]]))
-    
     return importances,std,indices
 
 def rank_by_hypergeometric(binary_classification,feature_matrix):
