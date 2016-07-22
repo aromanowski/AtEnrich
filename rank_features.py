@@ -27,13 +27,14 @@ def rank_features(input_gene_list,binary_classification,feature_matrix,n_estimat
     
     return importances,std,indices
 
-def rank_by_hypergeometric(binary_classification,feature_matrix):
+def hypergeometric(binary_classification,feature_matrix):
     
     X = feature_matrix
     y = binary_classification
     nF = feature_matrix.shape[1]
 
-    pvals = np.ones(nF)
+    pvals = np.ones(nF) #p-values
+    FE = np.ones(nF) #fold enrichment
 
     M = feature_matrix.shape[0] #total number of objects
     n = sum(y) #number in class
@@ -41,5 +42,7 @@ def rank_by_hypergeometric(binary_classification,feature_matrix):
         N = sum(X[:,feature_idx]) #number positive for this feature
         k = sum(np.multiply(X[:,feature_idx],y))
         pvals[feature_idx] = hypergeom.sf(k,M,n,N)
+        print k,n,N,M
+        FE[feature_idx] = (float(k)/n)/(float(N)/M)
     
-    return pvals
+    return pvals,FE
