@@ -8,11 +8,11 @@ import json
 import re
 import sqlite3
 
-def analyse_clustering(clustering_file_location,output_filename,gene_list_names=None,cluster_indices=None):
+def analyse_clustering(clustering_file_location,output_filename,cursor,gene_list_names=None,cluster_indices=None):
     
 #    db = sqlite3.connect("/home/daniel/Dropbox/Work/Data analysis/GeneListDB/GeneListDB.db")
-    db = sqlite3.connect("/home/daniel/Dropbox/Work/Circadian/Data/OMalley2016, DAP-seq data/DAPseqDB.db")
-    cursor = db.cursor()
+#    db = sqlite3.connect("/home/daniel/Dropbox/Work/Circadian/Data/OMalley2016, DAP-seq data/DAPseqDB.db")
+#    cursor = db.cursor()
     
     if not gene_list_names:
         #get default list of gene_list_names i.e. all gene lists
@@ -57,7 +57,7 @@ def analyse_clustering(clustering_file_location,output_filename,gene_list_names=
     
     FR_df.to_csv(output_filename,sep='\t')
     
-    db.close()
+#    db.close()
     
 #clustering_file_location = os.getenv('HOME')+'/Dropbox/Work/Circadian/Other projects/PhyA signalling/phya_data_analysis/whole_genome_clustering/'+'diurnal_clustering_090616.json'
 #output_filename = 'pval_analysis_GeneListDB_diurnal_clustering_090616.csv'
@@ -68,4 +68,4 @@ output_filename = 'senescence_clustering_cv0p25_FE_GeneListDB_analysis_190716.cs
 gene_list_names = None
 cluster_indices = None
 
-analyse_clustering(clustering_file_location,output_filename,gene_list_names,cluster_indices=cluster_indices)
+#analyse_clustering(clustering_file_location,output_filename,gene_list_names,cluster_indices=cluster_indices)
