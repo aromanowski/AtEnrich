@@ -43,6 +43,9 @@ def hypergeometric(binary_classification,feature_matrix):
         k = sum(np.multiply(X[:,feature_idx],y))
         pvals[feature_idx] = hypergeom.sf(k,M,n,N)
         print k,n,N,M
-        FE[feature_idx] = (float(k)/n)/(float(N)/M)
+        try:
+            FE[feature_idx] = (float(k)/n)/(float(N)/M)
+        except ZeroDivisionError:
+            FE[feature_idx] = 1.0
     
     return pvals,FE
