@@ -8,16 +8,20 @@ import json
 import re
 import sqlite3
 
-def analyse_clustering(clustering_file_location,output_filename,cursor,gene_list_names=None,cluster_indices=None):
+def analyse_clustering(clustering_file_location,output_filename,cursor,feature_id_column,table_name,gene_list_names=None,cluster_indices=None):
+    
+    #protect against SQL injection
+    def scrub(input_string):
+        return ''.join( chr for chr in input_string if (chr.isalnum() or chr=='_'))
+    table_name = scrub(table_name)
+    feature_id_column = scrub(feature_id_column)
     
     if not gene_list_names:
-        #get default list of gene_list_names i.e. all gene lists
-#        cursor.execute("""SELECT list_name FROM list_info;""")
-        cursor.execute("SELECT TF_locus_id FROM TF_TG_associations GROUP BY TF_locus_id;")
+        #get default feature list
+        sql_query = "SELECT {0} FROM {1} GROUP BY {0};".format(feature_id_column,table_name)
+        cursor.execute(sql_query)
         feature_list = [x[0] for x in cursor.fetchall()]
-#        feature_names = [x for x in feature_list if not re.search('seaton2015',x)]
-    
-    
+
     with open(clustering_file_location) as data_file:
         cluster_data = json.load(data_file)
     
