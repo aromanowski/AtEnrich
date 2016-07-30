@@ -8,7 +8,7 @@ import json
 import re
 import sqlite3
 
-def analyse_clustering(clustering_file_location,output_filename,cursor,feature_id_column,target_id_column,table_name,gene_list_names=None,cluster_indices=None):
+def analyse_clustering(clustering_file_location,output_filename,cursor,feature_id_column,target_id_column,table_name,feature_list=None,excluded_features=None,cluster_indices=None):
     
     #protect against SQL injection
     def scrub(input_string):
@@ -17,11 +17,13 @@ def analyse_clustering(clustering_file_location,output_filename,cursor,feature_i
     feature_id_column = scrub(feature_id_column)
     target_id_column = scrub(target_id_column)
     
-    if not gene_list_names:
-        #get default feature list
+    if not feature_list:
+        #create default feature list
         sql_query = "SELECT {0} FROM {1} GROUP BY {0};".format(feature_id_column,table_name)
         cursor.execute(sql_query)
         feature_list = [x[0] for x in cursor.fetchall()]
+    if excluded_features:
+        feature_list = [x for x in feature_list if ~any([x==y for y in excluded_features])]
 
     with open(clustering_file_location) as data_file:
         cluster_data = json.load(data_file)
