@@ -8,7 +8,7 @@ import json
 import re
 import sqlite3
 
-def analyse_clustering(clustering_file_location,output_filename,cursor,feature_id_column,target_id_column,table_name,feature_list=None,excluded_features=None,cluster_indices=None):
+def analyse_clustering(clustering_file_location,output_filename,cursor,feature_id_column,target_id_column,table_name,method='pval',feature_list=None,excluded_features=None,cluster_indices=None):
     
     #protect against SQL injection
     def scrub(input_string):
@@ -46,16 +46,19 @@ def analyse_clustering(clustering_file_location,output_filename,cursor,feature_i
     
     for cluster_idx in cluster_indices:
         classification = clustering_classifications[cluster_idx]
-        importances,std,indices = rank_features.random_forest(genes_of_interest,classification,
-                                                feature_matrix,
-                                                n_estimators=1200,
-                                                max_features=7,
-                                                max_depth=7)
-        FR_df[cluster_idx] = pd.Series(importances,index=feature_list)
-#        pvals,FE = rank_features.hypergeometric(classification,feature_matrix)
-#        FR_df[cluster_idx] = pd.Series(-np.log10(pvals),index=feature_list)
-        
-        
+        if method=='RF':
+            importances,std,indices = rank_features.random_forest(genes_of_interest,classification,
+                                                    feature_matrix,
+                                                    n_estimators=1200,
+                                                    max_features=7,
+                                                    max_depth=7)
+            FR_df[cluster_idx] = pd.Series(importances,index=feature_list)
+        elif method=='pval':
+            pvals,FE = rank_features.hypergeometric(classification,feature_matrix)
+            FR_df[cluster_idx] = pd.Series(-np.log10(pvals),index=feature_list)
+        elif method=='FE':
+            pvals,FE = rank_features.hypergeometric(classification,feature_matrix)
+            FR_df[cluster_idx] = pd.Series(FE,index=feature_list)
     
     FR_df.to_csv(output_filename,sep='\t')
     
