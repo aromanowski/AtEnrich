@@ -9,7 +9,7 @@ import re
 import sqlite3
 
 def analyse_clustering(clustering_file_location,output_filename,cursor,feature_id_column,target_id_column,table_name,method='pval',feature_list=None,excluded_features=None,cluster_indices=None):
-    
+    """Generate enrichment statistics for a given set of clusters."""
     #protect against SQL injection
     def scrub(input_string):
         return ''.join( chr for chr in input_string if (chr.isalnum() or chr=='_'))
