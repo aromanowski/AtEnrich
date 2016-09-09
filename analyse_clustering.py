@@ -62,3 +62,5 @@ def analyse_clustering(clustering_file_location,output_filename,cursor,feature_i
     
     FR_df.to_csv(output_filename,sep='\t')
     
+    return FR_df
+    
