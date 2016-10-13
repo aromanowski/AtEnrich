@@ -1,2 +1,3 @@
 from analyse_clustering import analyse_clustering
 from generate_feature_matrix import generate_feature_matrix
+from analyse_gene_list import analyse_gene_list
