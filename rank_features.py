@@ -40,7 +40,7 @@ def hypergeometric(binary_classification,feature_matrix):
     n = sum(y) #number in class
     for feature_idx in range(nF):
         N = sum(X[:,feature_idx]) #number positive for this feature
-        k = sum(np.multiply(X[:,feature_idx],y))
+        k = sum(np.multiply(X[:,feature_idx],y)) #number of positives within this set
         pvals[feature_idx] = hypergeom.sf(k,M,n,N)
         try:
             FE[feature_idx] = (float(k)/n)/(float(N)/M)
