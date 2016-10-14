@@ -38,20 +38,6 @@ def analyse_clustering(clustering_file_location,cursor,feature_id_column,target_
     >>>
     >>> db.close()"""
     
-    #protect against SQL injection
-    def scrub(input_string):
-        return ''.join( chr for chr in input_string if (chr.isalnum() or chr=='_'))
-    table_name = scrub(table_name)
-    feature_id_column = scrub(feature_id_column)
-    target_id_column = scrub(target_id_column)
-    
-    if not feature_list:
-        #create default feature list
-        sql_query = "SELECT {0} FROM {1} GROUP BY {0};".format(feature_id_column,table_name)
-        cursor.execute(sql_query)
-        feature_list = [x[0] for x in cursor.fetchall()]
-    if excluded_features:
-        feature_list = [x for x in feature_list if ~any([x==y for y in excluded_features])]
 
     with open(clustering_file_location) as data_file:
         cluster_data = json.load(data_file)
@@ -66,10 +52,9 @@ def analyse_clustering(clustering_file_location,cursor,feature_id_column,target_
     #get a binary classification vector for each cluster
     clustering_classifications = convert_clustering_to_classification(cluster_list)
     
-    #generate the accompanying feature matrix for all genes in the gene list
-    sql_query = """SELECT {0} FROM {1} WHERE {2}=?;""".format(target_id_column,table_name,feature_id_column)
-    feature_matrix = generate_feature_matrix(genes_of_interest,feature_list,cursor,sql_query=sql_query)
-        
+    #generate feature matrix
+    feature_matrix,feature_list = generate_feature_matrix(genes_of_interest,feature_list,excluded_features,feature_id_column,target_id_column,table_name,cursor)
+    
     FR_df = pd.DataFrame(index=feature_list,columns=cluster_indices)
     
     for cluster_idx in cluster_indices:

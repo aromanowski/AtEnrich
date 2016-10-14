@@ -1,7 +1,25 @@
 import pandas as pd
 import numpy as np
 
-def generate_feature_matrix(genes_of_interest,feature_list,db_cursor,sql_query="""SELECT locus_id FROM gene_lists WHERE list_name=?;"""):
+def generate_feature_matrix(genes_of_interest,feature_list,excluded_features,feature_id_column,target_id_column,table_name,db_cursor):
+
+    #protect against SQL injection
+    table_name = scrub(table_name)
+    feature_id_column = scrub(feature_id_column)
+    target_id_column = scrub(target_id_column)
+    
+    if not feature_list:
+        #create default feature list
+        sql_query = "SELECT {0} FROM {1} GROUP BY {0};".format(feature_id_column,table_name)
+        db_cursor.execute(sql_query)
+        feature_list = [x[0] for x in db_cursor.fetchall()]
+    if excluded_features:
+        feature_list = [x for x in feature_list if ~any([x==y for y in excluded_features])]
+
+    #generate the accompanying feature matrix for all genes in the gene list
+    sql_query = """SELECT {0} FROM {1} WHERE {2}=?;""".format(target_id_column,table_name,feature_id_column)
+
+
     feature_matrix = []
     
     for feature_name in feature_list:
@@ -11,7 +29,7 @@ def generate_feature_matrix(genes_of_interest,feature_list,db_cursor,sql_query="
         feature_matrix.append(binary_feature_vector)
     
     feature_matrix = np.array(feature_matrix).transpose()
-    return feature_matrix
+    return feature_matrix,feature_list
 
 
 def query_database(sql_query,list_name,db_cursor):
@@ -19,3 +37,7 @@ def query_database(sql_query,list_name,db_cursor):
     result = db_cursor.fetchall()
     returned_gene_list = [x[0] for x in result]
     return returned_gene_list
+
+def scrub(input_string):
+    '''Protect against SQL injection'''
+    return ''.join( chr for chr in input_string if (chr.isalnum() or chr=='_'))
