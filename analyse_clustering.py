@@ -5,7 +5,7 @@ import rank_features
 from generate_feature_matrix import generate_feature_matrix
 import json
 
-def analyse_clustering(clustering_file_location,output_filename,cursor,feature_id_column,target_id_column,table_name,method='pval',feature_list=None,excluded_features=None,cluster_indices=None):
+def analyse_clustering(clustering_file_location,cursor,feature_id_column,target_id_column,table_name,method='pval',feature_list=None,excluded_features=None,cluster_indices=None):
     """Generate enrichment statistics for a given set of clusters.
     
     >>> import sqlite3
@@ -27,14 +27,12 @@ def analyse_clustering(clustering_file_location,output_filename,cursor,feature_i
     >>> cursor = db.cursor()
     >>> 
     >>> method = 'pval'
-    >>> output_filename = 'test_output_'+method+'.csv'
-    >>> FR_df = analyse_clustering(clustering_file_location,output_filename,cursor,feature_id_column,target_id_column,table_name,method=method,feature_list=None,excluded_features=None,cluster_indices=cluster_indices)
+    >>> FR_df = analyse_clustering(clustering_file_location,cursor,feature_id_column,target_id_column,table_name,method=method,feature_list=None,excluded_features=None,cluster_indices=cluster_indices)
     >>> FR_df.loc['chen2014_phyA_induced',85]
     23.982050404665358
     >>> 
     >>> method = 'FE'
-    >>> output_filename = 'test_output_'+method+'.csv'
-    >>> FR_df = analyse_clustering(clustering_file_location,output_filename,cursor,feature_id_column,target_id_column,table_name,method=method,feature_list=None,excluded_features=None,cluster_indices=cluster_indices)
+    >>> FR_df = analyse_clustering(clustering_file_location,cursor,feature_id_column,target_id_column,table_name,method=method,feature_list=None,excluded_features=None,cluster_indices=cluster_indices)
     >>> FR_df.loc['chen2014_phyA_induced',85]
     4.0285602503912354
     >>>
@@ -89,9 +87,7 @@ def analyse_clustering(clustering_file_location,output_filename,cursor,feature_i
         elif method=='FE':
             pvals,FE = rank_features.hypergeometric(classification,feature_matrix)
             FR_df[cluster_idx] = pd.Series(FE,index=feature_list)
-    
-    FR_df.to_csv(output_filename,sep='\t')
-    
+        
     return FR_df
 
 if __name__ == "__main__":
