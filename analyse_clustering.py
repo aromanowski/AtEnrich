@@ -9,7 +9,40 @@ import re
 import sqlite3
 
 def analyse_clustering(clustering_file_location,output_filename,cursor,feature_id_column,target_id_column,table_name,method='pval',feature_list=None,excluded_features=None,cluster_indices=None):
-    """Generate enrichment statistics for a given set of clusters."""
+    """Generate enrichment statistics for a given set of clusters.
+    
+    >>> import sqlite3
+    >>> import os
+    >>> import inspect
+    >>> 
+    >>> main_dir = os.path.dirname(inspect.getfile(analyse_clustering))
+    >>> data_dir = os.path.join(main_dir,'tests','test_data_files')
+    >>> database_file = os.path.join(data_dir,'GeneListDB.db')
+    >>> table_name = 'gene_lists'
+    >>> feature_id_column = 'list_name'
+    >>> target_id_column = 'locus_id'
+    >>> 
+    >>> clustering_file_location = os.path.join(data_dir,'diurnal_clustering_300916.json')
+    >>> 
+    >>> cluster_indices = [85]
+    >>> 
+    >>> db = sqlite3.connect(database_file)
+    >>> cursor = db.cursor()
+    >>> 
+    >>> method = 'pval'
+    >>> output_filename = 'test_output_'+method+'.csv'
+    >>> FR_df = analyse_clustering(clustering_file_location,output_filename,cursor,feature_id_column,target_id_column,table_name,method=method,feature_list=None,excluded_features=None,cluster_indices=cluster_indices)
+    >>> FR_df.loc['chen2014_phyA_induced',85]
+    23.982050404665358
+    >>> 
+    >>> method = 'FE'
+    >>> output_filename = 'test_output_'+method+'.csv'
+    >>> FR_df = analyse_clustering(clustering_file_location,output_filename,cursor,feature_id_column,target_id_column,table_name,method=method,feature_list=None,excluded_features=None,cluster_indices=cluster_indices)
+    >>> FR_df.loc['chen2014_phyA_induced',85]
+    4.0285602503912354
+    >>>
+    >>> db.close()"""
+    
     #protect against SQL injection
     def scrub(input_string):
         return ''.join( chr for chr in input_string if (chr.isalnum() or chr=='_'))
@@ -63,4 +96,7 @@ def analyse_clustering(clustering_file_location,output_filename,cursor,feature_i
     FR_df.to_csv(output_filename,sep='\t')
     
     return FR_df
-    
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
