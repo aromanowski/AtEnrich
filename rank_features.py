@@ -61,7 +61,7 @@ def FE(class_vector,feature_matrix):
 
     nF = feature_matrix.shape[1]
 
-    FE = np.ones(nF) #fold enrichment
+    fold_enrich = np.ones(nF) #fold enrichment
 
     M = feature_matrix.shape[0] #total number of objects
     n = sum(class_vector) #number in class
@@ -70,8 +70,8 @@ def FE(class_vector,feature_matrix):
         N = sum(feature_vector) #number positive for this feature
         k = sum(np.multiply(feature_vector,class_vector)) #number of positives within this set
         try:
-            FE[feature_idx] = (float(k)/n)/(float(N)/M)
+            fold_enrich[feature_idx] = (float(k)/n)/(float(N)/M)
         except ZeroDivisionError:
-            FE[feature_idx] = 1.0
+            fold_enrich[feature_idx] = 1.0
     
-    return FE
+    return fold_enrich
