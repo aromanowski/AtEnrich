@@ -32,7 +32,6 @@ def hypergeometric(binary_classification,feature_matrix):
     nF = feature_matrix.shape[1]
 
     pvals = np.ones(nF) #p-values
-    FE = np.ones(nF) #fold enrichment
 
     M = feature_matrix.shape[0] #total number of objects
     n = sum(y) #number in class
@@ -40,12 +39,8 @@ def hypergeometric(binary_classification,feature_matrix):
         N = sum(X[:,feature_idx]) #number positive for this feature
         k = sum(np.multiply(X[:,feature_idx],y)) #number of positives within this set
         pvals[feature_idx] = scipy.stats.hypergeom.sf(k,M,n,N)
-        try:
-            FE[feature_idx] = (float(k)/n)/(float(N)/M)
-        except ZeroDivisionError:
-            FE[feature_idx] = 1.0
     
-    return pvals,FE
+    return pvals
     
 def FE(class_vector,feature_matrix):
     '''Calculate fold enrichment of class members in feature categories

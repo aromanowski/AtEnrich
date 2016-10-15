@@ -67,10 +67,10 @@ def analyse_clustering(clustering_file_location,cursor,feature_id_column,target_
                                                     max_depth=7)
             FR_df[cluster_idx] = pd.Series(importances,index=feature_list)
         elif method=='pval':
-            pvals,FE = rank_features.hypergeometric(classification,feature_matrix)
+            pvals = rank_features.hypergeometric(classification,feature_matrix)
             FR_df[cluster_idx] = pd.Series(-np.log10(pvals),index=feature_list)
         elif method=='FE':
-            pvals,FE = rank_features.hypergeometric(classification,feature_matrix)
+            FE = rank_features.FE(classification,feature_matrix)
             FR_df[cluster_idx] = pd.Series(FE,index=feature_list)
         
     return FR_df
