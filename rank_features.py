@@ -1,5 +1,5 @@
-from sklearn.ensemble import ExtraTreesClassifier
-from scipy.stats import hypergeom
+import sklearn.ensemble
+import scipy.stats
 import numpy as np
 
 def random_forest(input_gene_list,binary_classification,feature_matrix,n_estimators=400,max_features=None,max_depth=5):
@@ -12,10 +12,10 @@ def random_forest(input_gene_list,binary_classification,feature_matrix,n_estimat
         #set default value used by ExtraTreesClassifier
         max_features = int(nF**0.5)
     
-    forest = ExtraTreesClassifier(n_estimators=n_estimators,
-                                  max_features=max_features,
-                                  max_depth=max_depth,
-                                  random_state=0)
+    forest = sklearn.ensemble.ExtraTreesClassifier(n_estimators=n_estimators,
+                                                   max_features=max_features,
+                                                   max_depth=max_depth,
+                                                   random_state=0)
     
     forest.fit(X,y)
     importances = forest.feature_importances_
@@ -39,7 +39,7 @@ def hypergeometric(binary_classification,feature_matrix):
     for feature_idx in range(nF):
         N = sum(X[:,feature_idx]) #number positive for this feature
         k = sum(np.multiply(X[:,feature_idx],y)) #number of positives within this set
-        pvals[feature_idx] = hypergeom.sf(k,M,n,N)
+        pvals[feature_idx] = scipy.stats.hypergeom.sf(k,M,n,N)
         try:
             FE[feature_idx] = (float(k)/n)/(float(N)/M)
         except ZeroDivisionError:
