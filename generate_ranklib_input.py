@@ -1,13 +1,14 @@
-def generate_ranklib_input(candidate_reg,exp_data,cluster_obj,feature_df):
+def generate_ranklib_input(candidate_reg,eData,cData,fDF,output_filepath):
     '''Generate input for RankLib from expression clustering
     
     Args:
         candidate_reg: List of tuples of the form (gene_id,cluster_id)
-        exp_data: ExpressionData object
-        cluster_obj: ClusterData object
-        feature_df: feature enrichment dataframe
+        eData: ExpressionData object
+        cData: ClusterData object
+        fDF: feature enrichment dataframe
             (feature_name,cluster_id) MultiIndex on the columns
             gene_id as the index on the rows
+        output_filepath: Location to print output
     
     Returns:
         bool: True if successful.
@@ -39,8 +40,18 @@ def generate_ranklib_input(candidate_reg,exp_data,cluster_obj,feature_df):
     For our purposes, qid should be equal for all entries (we allow comparisons
     between any pair of regulation candidates).'''
     
-    #1. For each pair, calculate the similarity coefficient for expression
-    #   (if not possible, set to zero)
-    # 
-    
-    #2. Output (to file?)
+    #For each pair, calculate the mean similarity coefficient for expression
+    # (if not possible, set to zero).
+    with open(output_filepath,'w') as f:
+        feature_list = fDF.columns.levels[0]
+        for reg in candidate_reg:
+            regulator_id,cluster_idx = reg
+            try:
+                similarity = eData.mean_similarity(regulator_id,cData['cluster_gene_lists'][cluster_idx])
+            except KeyError:
+                similarity = 0.0
+            feature_data = [fDF.loc[regulator_id,(x,cluster_idx)] for x in feature_list]
+            #Get into the right format
+            feature_data_string = [str(x+1)+':'+str(y) for x,y in enumerate(feature_data)]
+            f.write(' '.join([str(similarity),'qid:1']+feature_data_string)+'\n')
+    return True
