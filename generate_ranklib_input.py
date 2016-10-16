@@ -1,7 +1,18 @@
-def generate_ranklib_input(candidate_reg,exp_data,feature_data):
+def generate_ranklib_input(candidate_reg,exp_data,cluster_obj,feature_df):
     '''Generate input for RankLib from expression clustering
     
+    Args:
+        candidate_reg: List of tuples of the form (gene_id,cluster_id)
+        exp_data: ExpressionData object
+        cluster_obj: ClusterData object
+        feature_df: feature enrichment dataframe
+            (feature_name,cluster_id) MultiIndex on the columns
+            gene_id as the index on the rows
     
+    Returns:
+        bool: True if successful.
+    
+
     The function generates a text file in the format:
     
     <line> .=. <target> qid:<qid> <feature>:<value> <feature>:<value> ... <feature>:<value> # <info>
@@ -30,5 +41,6 @@ def generate_ranklib_input(candidate_reg,exp_data,feature_data):
     
     #1. For each pair, calculate the similarity coefficient for expression
     #   (if not possible, set to zero)
+    # 
     
     #2. Output (to file?)
