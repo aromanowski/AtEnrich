@@ -75,3 +75,38 @@ def FE(class_vector,feature_matrix):
             fold_enrich[feature_idx] = 1.0
     
     return fold_enrich
+
+
+def enrichment(class_vector,feature_matrix):
+    '''Calculate enrichment of class members in feature categories
+    
+    Args:
+        class_vector: 1-by-nG array
+        feature_matrix: nG-by-nF array
+    Returns:
+        1-by-nF array
+    
+    Example:
+    >>> class_vector = np.array([0,1,1,0,0,0,0])
+    >>> feature_matrix = np.array([[0,0],[1,0],[1,1],[1,0],[1,0],[0,1],[1,1]])
+    >>> enrichment(class_vector,feature_matrix)
+    array([ 1. ,  0.5])'''
+
+    assert(all([x in [0,1] for x in class_vector])) #classification vector is binary
+
+    nF = feature_matrix.shape[1]
+
+    enrich = np.ones(nF) #fold enrichment
+
+    M = feature_matrix.shape[0] #total number of objects
+    n = sum(class_vector) #number in class
+    for feature_idx in range(nF):
+        feature_vector = feature_matrix[:,feature_idx]
+        N = sum(feature_vector) #number positive for this feature
+        k = sum(np.multiply(feature_vector,class_vector)) #number of positives within this set
+        try:
+            enrich[feature_idx] = (float(k)/n)
+        except ZeroDivisionError:
+            enrich[feature_idx] = 0.0
+    
+    return enrich
