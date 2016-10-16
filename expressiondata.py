@@ -32,11 +32,13 @@ class ExpressionData:
         assert(all([x>=0 for x in self.weight_dict.values()]))
     
     def _set_default_weights(self):
+        """Set default weights (i.e. equal for all eDFs)"""
         self.weight_dict = dict([(x,1.0) for x in self.data_dict.keys()])
         self._normalise_weights()
         self._using_default_weights = True
 
     def _normalise_weights(self):
+        """Normalise weights to sum to 1"""
         norm_factor = float(len(self.weight_dict))
         for key in self.weight_dict.keys():
             self.weight_dict[key] = self.weight_dict[key]/norm_factor
@@ -50,6 +52,7 @@ class ExpressionData:
         self._set_default_weights()
     
     def similarity(self,gene1,gene2):
+        """Calculate similarity between gene1 and gene2"""
         sim = 0.0
         for key in self.data_dict.keys():
             w = self.weight_dict[key]
