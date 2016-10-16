@@ -1,4 +1,5 @@
 import scipy.stats
+import numpy as np
 
 class ExpressionData:
     """A set of expression dataframes.
@@ -54,3 +55,10 @@ class ExpressionData:
             w = self.weight_dict[key]
             sim += w*self.sim_fcn(self.data_dict[key].loc[gene1,:],self.data_dict[key].loc[gene2,:])
         return sim
+    
+    def mean_similarity(self,gene1,gene_list):
+        """Calculate mean similarity between gene1 and gene_list"""
+        similarities = []
+        for gene2 in gene_list:
+            similarities.append(self.similarity(gene1,gene2))
+        return np.mean(similarities)
