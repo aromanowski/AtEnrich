@@ -42,14 +42,14 @@ def generate_ranklib_input(candidate_reg,eData,cData,fDF,output_filepath):
     For our purposes, qid should be equal for all entries (we allow comparisons
     between any pair of regulation candidates).'''
     
-    #For each pair, calculate the mean similarity coefficient for expression
+    #For each pair, calculate the abs(mean_similarity) coefficient for expression
     # (if not possible, set to zero).
     with open(output_filepath,'w') as f:
         feature_list = fDF.columns.levels[0]
         for reg in candidate_reg:
             regulator_id,cluster_idx = reg
             try:
-                similarity = eData.mean_similarity(regulator_id,cData['cluster_gene_lists'][cluster_idx])
+                similarity = abs(eData.mean_similarity(regulator_id,cData['cluster_gene_lists'][cluster_idx]))
                 if np.isnan(similarity):
                     similarity = 0.0
             except KeyError:
