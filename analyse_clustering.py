@@ -45,7 +45,7 @@ def analyse_clustering(clustering_file_location,cursor,feature_id_column,target_
     genes_of_interest = cluster_data['gene_list']
     cluster_list = cluster_data['labels']
     
-    if not cluster_indices:
+    if cluster_indices is None:
         #use default - analyse all clusters
         cluster_indices = list(set(cluster_list))
     
