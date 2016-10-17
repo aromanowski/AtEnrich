@@ -1,3 +1,5 @@
+import numpy as np
+
 def generate_ranklib_input(candidate_reg,eData,cData,fDF,output_filepath):
     '''Generate input for RankLib from expression clustering
     
@@ -48,6 +50,8 @@ def generate_ranklib_input(candidate_reg,eData,cData,fDF,output_filepath):
             regulator_id,cluster_idx = reg
             try:
                 similarity = eData.mean_similarity(regulator_id,cData['cluster_gene_lists'][cluster_idx])
+                if np.isnan(similarity):
+                    similarity = 0.0
             except KeyError:
                 similarity = 0.0
             feature_data = [fDF.loc[regulator_id,(x,cluster_idx)] for x in feature_list]
