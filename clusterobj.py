@@ -1,5 +1,4 @@
 import json
-import clusterobj
 
 class ClusterObj:
     """A cluster object."""
