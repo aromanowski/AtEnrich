@@ -8,7 +8,7 @@ class ClusterObj:
             keys = [u'datasets',
             u'description',
             u'labels',
-            'cluster_gene_lists',
+            u'cluster_gene_lists',
             u'cluster_method',
             u'cluster_centers',
             u'cluster_parameters',
