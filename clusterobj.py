@@ -38,3 +38,6 @@ class ClusterObj:
     def get_cluster_label(self,gene_name):
         idx = self['gene_list'].index(gene_name)
         return self['labels'][idx]
+    
+    def keys(self):
+        return self.data.keys()
