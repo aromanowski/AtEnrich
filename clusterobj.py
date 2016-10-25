@@ -29,8 +29,8 @@ class ClusterObj:
         for label,gene_name in zip(data['labels'],data['gene_list']):
             data['cluster_gene_lists'][label].append(gene_name)
         
-        cluster_obj = cls(data)
-        return cluster_obj
+        cData = cls(data)
+        return cData
     
     @classmethod
     def from_txt(cls,clustering_file_location,sep='\t',header=False):
