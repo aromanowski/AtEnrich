@@ -32,6 +32,22 @@ class ClusterObj:
         cluster_obj = cls(data)
         return cluster_obj
     
+    @classmethod
+    def from_txt(cls,clustering_file_location,sep='\t',header=False):
+        if header:
+            offset = 1
+        else:
+            offset = 0
+        
+        with open(clustering_file_location) as data_file:
+            gene_label_pairs = [x.strip().split(sep) for x in data_file.readlines()[offset:]]
+        
+        data = dict()
+        data['gene_list'] = [x[0] for x in gene_label_pairs]
+        data['labels'] = [x[1] for x in gene_label_pairs]
+        cData = cls(data)
+        return cData
+    
     def __getitem__(self,key):
         return self.data[key]
         
