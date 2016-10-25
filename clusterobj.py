@@ -15,7 +15,7 @@ class ClusterObj:
             u'gene_list',
             u'label_set',
             u'cluster_gene_lists']
-            self.data = dict([x,[]] for x in keys)
+            self.data = dict([x,None] for x in keys)
         else:
             self.data = data
 
