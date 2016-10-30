@@ -81,4 +81,4 @@ class ExpressionData:
         """Return a list of transcripts with similarity > threshold to a given transcript (gene1)."""
         assert(threshold>=-1)
         assert(threshold<=1)
-        return [x for x in self.gene_list if self.mean_similarity(gene1,x)>=threshold]            
+        return [x for x in self.gene_list if self.similarity(gene1,x)>=threshold]            
