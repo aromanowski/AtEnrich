@@ -15,6 +15,7 @@ class ExpressionData:
         similarity(gene1,gene2): Calculate similarity between gene1 and gene2
         mean_similarity(gene1,gene_list): Mean similarity between gene1 and gene_list
         similar_genes(gene1,threshold): Return a list of transcripts with similarity > threshold to a given transcript (gene1).
+        select_gene_subset(gene_subset): Only keep data for a subset of genes.
     
         _set_gene_list
         _set_default_weights
@@ -89,4 +90,11 @@ class ExpressionData:
         """Return a list of transcripts with similarity > threshold to a given transcript (gene1)."""
         assert(threshold>=-1)
         assert(threshold<=1)
-        return [x for x in self.gene_list if self.similarity(gene1,x)>=threshold]            
+        return [x for x in self.gene_list if self.similarity(gene1,x)>=threshold]
+
+    def select_gene_subset(self,gene_subset):
+        """Only keep data for a subset of genes."""
+        gene_subset = list(set(gene_subset)&set(self.gene_list))
+        for key in self.data_dict.keys():
+            self[key] = self[key].loc[gene_subset,:]
+        self.gene_list = gene_subset
