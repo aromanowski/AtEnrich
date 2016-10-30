@@ -1,5 +1,6 @@
 import scipy.stats
 import numpy as np
+import pandas as pd
 
 class ExpressionData:
     """A set of expression dataframes.
@@ -8,6 +9,7 @@ class ExpressionData:
         data_dict: A dictionary containing expression dataframes (eDFs).
         sim_fcn: A function that calculates gene-gene similarities for individual eDFs.
         weight_dict: A dictionary of weights for summing similarities.
+        similarity_matrix: A dataframe of all gene-gene similarities.
         
         _using_default_weights: Boolean indicating whether weights have been user-specified.
     
@@ -16,7 +18,8 @@ class ExpressionData:
         mean_similarity(gene1,gene_list): Mean similarity between gene1 and gene_list
         similar_genes(gene1,threshold): Return a list of transcripts with similarity > threshold to a given transcript (gene1).
         select_gene_subset(gene_subset): Only keep data for a subset of genes.
-    
+        generate_similarity_matrix(): Generate similarity matrix for all gene-gene pairs.
+
         _set_gene_list
         _set_default_weights
         _normalise_weights
@@ -25,6 +28,7 @@ class ExpressionData:
     def __init__(self,data_dict=dict(),sim_fcn=lambda x,y: scipy.stats.pearsonr(x,y)[0],weight_dict=None):
         self.data_dict = data_dict
         self.sim_fcn = sim_fcn
+        self.similarity_matrix = None
         self._set_gene_list()
         if weight_dict is None:
             #Default to equal weighting
@@ -91,7 +95,15 @@ class ExpressionData:
         assert(threshold>=-1)
         assert(threshold<=1)
         return [x for x in self.gene_list if self.similarity(gene1,x)>=threshold]
-
+    
+    def generate_similarity_matrix(self):
+        self.similarity_matrix = pd.DataFrame(index=self.gene_list,columns=self.gene_list)
+        for idx,g1 in enumerate(self.gene_list):
+            for g2 in self.gene_list[idx:]:
+                sim = self.similarity(g1,g2)
+                self.similarity_matrix.loc[g1,g2] = sim
+                self.similarity_matrix.loc[g2,g1] = sim
+                
     def select_gene_subset(self,gene_subset):
         """Only keep data for a subset of genes."""
         gene_subset = list(set(gene_subset)&set(self.gene_list))
