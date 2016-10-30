@@ -15,6 +15,7 @@ class ExpressionData:
         similarity(gene1,gene2): Calculate similarity between gene1 and gene2
         mean_similarity(gene1,gene_list): Mean similarity between gene1 and gene_list
     
+        _set_gene_list
         _set_default_weights
         _normalise_weights
     """
@@ -22,6 +23,7 @@ class ExpressionData:
     def __init__(self,data_dict=dict(),sim_fcn=lambda x,y: scipy.stats.pearsonr(x,y)[0],weight_dict=None):
         self.data_dict = data_dict
         self.sim_fcn = sim_fcn
+        self._set_gene_list()
         if weight_dict is None:
             #Default to equal weighting
             self._set_default_weights()
@@ -43,6 +45,13 @@ class ExpressionData:
         norm_factor = float(len(self.weight_dict))
         for key in self.weight_dict.keys():
             self.weight_dict[key] = self.weight_dict[key]/norm_factor
+    
+    def _set_gene_list(self):
+        """Identify valid gene ids, found in all contained datasets."""
+        if len(self.data_dict)>0:
+            self.gene_list = list(set.intersection(*[set(eDF.index) for eDF in self.data_dict.values()]))
+        else:
+            self.gene_list = []
         
     def __getitem__(self, key):
         return self.data_dict[key]
@@ -51,6 +60,7 @@ class ExpressionData:
         self.data_dict[key] = item
         #New dataset being added - reset weights to default
         self._set_default_weights()
+        self._set_gene_list()
     
     def similarity(self,gene1,gene2):
         """Calculate similarity between gene1 and gene2"""
