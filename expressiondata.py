@@ -12,7 +12,8 @@ class ExpressionData:
         _using_default_weights: Boolean indicating whether weights have been user-specified.
     
     Methods:
-        similarity(gene1,gene2)
+        similarity(gene1,gene2): Calculate similarity between gene1 and gene2
+        mean_similarity(gene1,gene_list): Mean similarity between gene1 and gene_list
     
         _set_default_weights
         _normalise_weights
