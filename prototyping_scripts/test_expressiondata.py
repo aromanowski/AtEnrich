@@ -10,8 +10,6 @@ file_dict = {
 'Diurnal_photoperiod':'Diurnal (Mockler)/shortday_longday_processed.csv'}
 
 #Initialise dataset in both alternative ways:
-
-test1 = ExpressionData()
 datasets = dict()
 for key in file_dict.keys():
     filename = file_dict[key]
@@ -19,9 +17,8 @@ for key in file_dict.keys():
     all_data_cols = [x for x in eDF.columns if re.search('AVG',x)]
     eDF = eDF.loc[:,all_data_cols]
     datasets[key] = eDF
-    test1[key] = eDF
 
-test2 = ExpressionData(data_dict=datasets)
+test1 = ExpressionData(datasets)
 
 test1.mean_similarity('AT1G09570',['AT5G01320'])
 test1.similar_genes('AT1G09570',0.9)

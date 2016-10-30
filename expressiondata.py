@@ -6,11 +6,11 @@ class ExpressionData:
     """A set of expression dataframes.
     
     Attributes:
-        data_dict: A dictionary containing expression dataframes (eDFs).
         sim_fcn: A function that calculates gene-gene similarities for individual eDFs.
         weight_dict: A dictionary of weights for summing similarities.
         similarity_matrix: A dataframe of all gene-gene similarities.
         
+        _data_dict: A dictionary containing expression dataframes (eDFs).
         _using_default_weights: Boolean indicating whether weights have been user-specified.
     
     Methods:
@@ -25,8 +25,8 @@ class ExpressionData:
         _normalise_weights
     """
 
-    def __init__(self,data_dict=dict(),sim_fcn=lambda x,y: scipy.stats.pearsonr(x,y)[0],weight_dict=None):
-        self.data_dict = data_dict
+    def __init__(self,data_dict,sim_fcn=lambda x,y: scipy.stats.pearsonr(x,y)[0],weight_dict=None):
+        self._data_dict = data_dict
         self.sim_fcn = sim_fcn
         self.similarity_matrix = None
         self._similarity_matrix_generated = False
@@ -43,19 +43,11 @@ class ExpressionData:
 
     def __getitem__(self, key):
         return self.data_dict[key]
-    
-    def __setitem__(self, key, item):
-        self.data_dict[key] = item
-        #New dataset being added - reset weights to default
-        self._set_default_weights()
-        self._set_gene_list()
-
-
 
 
     def _set_default_weights(self):
         """Set default weights (i.e. equal for all eDFs)"""
-        self.weight_dict = dict([(x,1.0) for x in self.data_dict.keys()])
+        self.weight_dict = dict([(x,1.0) for x in self._data_dict.keys()])
         self._normalise_weights()
         self._using_default_weights = True
 
@@ -67,8 +59,8 @@ class ExpressionData:
     
     def _set_gene_list(self):
         """Identify valid gene ids, found in all contained datasets."""
-        if len(self.data_dict)>0:
-            self.gene_list = list(set.intersection(*[set(eDF.index) for eDF in self.data_dict.values()]))
+        if len(self._data_dict)>0:
+            self.gene_list = list(set.intersection(*[set(eDF.index) for eDF in self._data_dict.values()]))
         else:
             self.gene_list = []
 
@@ -82,9 +74,9 @@ class ExpressionData:
             return self.similarity_matrix.loc[gene1,gene2]
         else:
             sim = 0.0
-            for key in self.data_dict.keys():
+            for key in self._data_dict.keys():
                 w = self.weight_dict[key]
-                sim += w*self.sim_fcn(self.data_dict[key].loc[gene1,:],self.data_dict[key].loc[gene2,:])
+                sim += w*self.sim_fcn(self._data_dict[key].loc[gene1,:],self._data_dict[key].loc[gene2,:])
             return sim
     
     def mean_similarity(self,gene1,gene_list):
@@ -112,6 +104,6 @@ class ExpressionData:
     def select_gene_subset(self,gene_subset):
         """Only keep data for a subset of genes."""
         gene_subset = list(set(gene_subset)&set(self.gene_list))
-        for key in self.data_dict.keys():
-            self[key] = self[key].loc[gene_subset,:]
+        for key in self._data_dict.keys():
+            self._data_dict[key] = self._data_dict[key].loc[gene_subset,:]
         self.gene_list = gene_subset
