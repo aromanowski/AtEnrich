@@ -14,6 +14,7 @@ class ExpressionData:
     Methods:
         similarity(gene1,gene2): Calculate similarity between gene1 and gene2
         mean_similarity(gene1,gene_list): Mean similarity between gene1 and gene_list
+        similar_genes(gene1,threshold): Return a list of transcripts with similarity > threshold to a given transcript (gene1).
     
         _set_gene_list
         _set_default_weights
