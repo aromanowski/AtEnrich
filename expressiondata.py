@@ -34,7 +34,19 @@ class ExpressionData:
             self._using_default_weights = False
         
         assert(all([x>=0 for x in self.weight_dict.values()]))
+
+    def __getitem__(self, key):
+        return self.data_dict[key]
     
+    def __setitem__(self, key, item):
+        self.data_dict[key] = item
+        #New dataset being added - reset weights to default
+        self._set_default_weights()
+        self._set_gene_list()
+
+
+
+
     def _set_default_weights(self):
         """Set default weights (i.e. equal for all eDFs)"""
         self.weight_dict = dict([(x,1.0) for x in self.data_dict.keys()])
@@ -53,15 +65,10 @@ class ExpressionData:
             self.gene_list = list(set.intersection(*[set(eDF.index) for eDF in self.data_dict.values()]))
         else:
             self.gene_list = []
-        
-    def __getitem__(self, key):
-        return self.data_dict[key]
-    
-    def __setitem__(self, key, item):
-        self.data_dict[key] = item
-        #New dataset being added - reset weights to default
-        self._set_default_weights()
-        self._set_gene_list()
+
+
+
+
     
     def similarity(self,gene1,gene2):
         """Calculate similarity between gene1 and gene2"""
