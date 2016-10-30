@@ -22,3 +22,6 @@ for key in file_dict.keys():
     test1[key] = eDF
 
 test2 = ExpressionData(data_dict=datasets)
+
+test1.mean_similarity('AT1G09570',['AT5G01320'])
+test1.similar_genes('AT1G09570',0.9)
