@@ -1,12 +1,15 @@
 import os
 import re
 import pandas as pd
+from GAFER import *
 home_dir = os.getenv('HOME')
 data_dir = home_dir+'/Dropbox/Work/Circadian/Data/'
 
 file_dict = {
 'Rugnone2013':'Rugnone2013, LNK1 LNK2 RNASeq/GSE43865_processed.csv',
 'Diurnal_photoperiod':'Diurnal (Mockler)/shortday_longday_processed.csv'}
+
+#Initialise dataset in both alternative ways:
 
 test1 = ExpressionData()
 datasets = dict()
