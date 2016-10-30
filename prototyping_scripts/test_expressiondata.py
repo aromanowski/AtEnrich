@@ -26,5 +26,6 @@ test2 = ExpressionData(data_dict=datasets)
 test1.mean_similarity('AT1G09570',['AT5G01320'])
 test1.similar_genes('AT1G09570',0.9)
 
-gene_subset = test1.gene_list[:100]
+gene_subset = test1.gene_list[:15]
 test1.select_gene_subset(gene_subset)
+test1.generate_similarity_matrix()
