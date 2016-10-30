@@ -29,3 +29,4 @@ test1.similar_genes('AT1G09570',0.9)
 gene_subset = test1.gene_list[:15]
 test1.select_gene_subset(gene_subset)
 test1.generate_similarity_matrix()
+test1.similarity(gene_subset[1],gene_subset[2])

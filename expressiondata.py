@@ -29,6 +29,7 @@ class ExpressionData:
         self.data_dict = data_dict
         self.sim_fcn = sim_fcn
         self.similarity_matrix = None
+        self._similarity_matrix_generated = False
         self._set_gene_list()
         if weight_dict is None:
             #Default to equal weighting
@@ -77,11 +78,14 @@ class ExpressionData:
     
     def similarity(self,gene1,gene2):
         """Calculate similarity between gene1 and gene2"""
-        sim = 0.0
-        for key in self.data_dict.keys():
-            w = self.weight_dict[key]
-            sim += w*self.sim_fcn(self.data_dict[key].loc[gene1,:],self.data_dict[key].loc[gene2,:])
-        return sim
+        if self._similarity_matrix_generated:
+            return self.similarity_matrix.loc[gene1,gene2]
+        else:
+            sim = 0.0
+            for key in self.data_dict.keys():
+                w = self.weight_dict[key]
+                sim += w*self.sim_fcn(self.data_dict[key].loc[gene1,:],self.data_dict[key].loc[gene2,:])
+            return sim
     
     def mean_similarity(self,gene1,gene_list):
         """Calculate mean similarity between gene1 and gene_list"""
@@ -103,6 +107,7 @@ class ExpressionData:
                 sim = self.similarity(g1,g2)
                 self.similarity_matrix.loc[g1,g2] = sim
                 self.similarity_matrix.loc[g2,g1] = sim
+        self._similarity_matrix_generated = True
                 
     def select_gene_subset(self,gene_subset):
         """Only keep data for a subset of genes."""
