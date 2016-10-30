@@ -66,3 +66,9 @@ class ExpressionData:
         for gene2 in gene_list:
             similarities.append(self.similarity(gene1,gene2))
         return np.mean(similarities)
+    
+    def similar_genes(self,gene1,threshold):
+        """Return a list of transcripts with similarity > threshold to a given transcript (gene1)."""
+        assert(threshold>=-1)
+        assert(threshold<=1)
+        return [x for x in self.gene_list if self.mean_similarity(gene1,x)>=threshold]            
