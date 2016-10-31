@@ -1,7 +1,17 @@
-import pandas as pd
+import os.path
 import numpy as np
+import json
+import sqlite3
 
-def generate_feature_matrix(genes_of_interest,feature_list,excluded_features,feature_id_column,target_id_column,table_name,db_cursor):
+def generate_feature_matrix(genes_of_interest,feature_list,excluded_features,db_id):
+    
+    with open(os.path.join(os.path.dirname(__file__),'db_config.json'), 'r') as f:
+        db_config = json.load(f)
+    feature_id_column = db_config[db_id]['feature_id_column']
+    target_id_column = db_config[db_id]['target_id_column']
+    table_name = db_config[db_id]['table_name']
+    db = sqlite3.connect(db_config[db_id]['database_file'])
+    db_cursor = db.cursor()
 
     #protect against SQL injection
     table_name = scrub(table_name)
@@ -19,7 +29,6 @@ def generate_feature_matrix(genes_of_interest,feature_list,excluded_features,fea
     #generate the accompanying feature matrix for all genes in the gene list
     sql_query = """SELECT {0} FROM {1} WHERE {2}=?;""".format(target_id_column,table_name,feature_id_column)
 
-
     feature_matrix = []
     
     for feature_name in feature_list:
@@ -29,6 +38,7 @@ def generate_feature_matrix(genes_of_interest,feature_list,excluded_features,fea
         feature_matrix.append(binary_feature_vector)
     
     feature_matrix = np.array(feature_matrix).transpose()
+    db.close()
     return feature_matrix,feature_list
 
 
