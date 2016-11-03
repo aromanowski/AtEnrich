@@ -9,28 +9,32 @@ class ClusterData:
     >>> 
     >>> clustering_file_location = os.path.join(data_dir,'diurnal_clustering_300916.json')
     >>> 
-    >>> clusters = ClusterData.from_json(clustering_file_location)
+    >>> cData = ClusterData.from_json(clustering_file_location)
     >>> 
-    >>> clusters.get_cluster_label('AT3G51240')
+    >>> cData.get_cluster_label('AT3G51240')
     85
-    >>> clusters.get_cluster_label('AT1G09570')
+    >>> cData.get_cluster_label('AT1G09570')
     6
     """
     
+    _required_keys = [u'datasets',
+    u'description',
+    u'labels',
+    u'cluster_gene_lists',
+    u'cluster_method',
+    u'cluster_centers',
+    u'cluster_parameters',
+    u'gene_list',
+    u'label_set',
+    u'cluster_gene_lists']
+    
     def __init__(self,data=None):
         if data is None:
-            keys = [u'datasets',
-            u'description',
-            u'labels',
-            u'cluster_gene_lists',
-            u'cluster_method',
-            u'cluster_centers',
-            u'cluster_parameters',
-            u'gene_list',
-            u'label_set',
-            u'cluster_gene_lists']
+            keys = ClusterData._required_keys
             self.data = dict([x,None] for x in keys)
         else:
+            if not all([x in data for x in ClusterData._required_keys]):
+                raise ValueError('Not all of the required keys are contained in the input data dictionary')
             self.data = data
 
     @classmethod
