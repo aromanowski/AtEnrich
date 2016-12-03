@@ -8,5 +8,10 @@
 		"database_file":"/home/daniel/Dropbox/Work/Circadian/Data/OMalley2016, DAP-seq data/DAPseqDB.db",
 		"table_name":"TF_TG_associations",
 		"feature_id_column":"TF_locus_id",
+		"target_id_column":"TG_locus_id"},
+	"Song2016DB": {
+		"database_file":"/home/daniel/Dropbox/Work/Circadian/Data/Song2016, ABA ChIP-seq RNA-seq/Song2016DB.db",
+		"table_name":"TF_TG_associations",
+		"feature_id_column":"TF_locus_id",
 		"target_id_column":"TG_locus_id"}
 }
