@@ -1,5 +1,6 @@
 import os.path
 import numpy as np
+import pandas as pd
 import json
 import sqlite3
 
@@ -29,15 +30,15 @@ def generate_feature_matrix(genes_of_interest,feature_list,excluded_features,db_
     #generate the accompanying feature matrix for all genes in the gene list
     sql_query = """SELECT {0} FROM {1} WHERE {2}=?;""".format(target_id_column,table_name,feature_id_column)
 
-    feature_matrix = []
+    feature_df = pd.DataFrame(index=genes_of_interest,columns=feature_list)
     
     for feature_name in feature_list:
         returned_gene_list = query_database(sql_query,feature_name,db_cursor)
         #features for this list
         binary_feature_vector = [int(x in returned_gene_list) for x in genes_of_interest]
-        feature_matrix.append(binary_feature_vector)
+        feature_df[feature_name] = binary_feature_vector
     
-    feature_matrix = np.array(feature_matrix).transpose()
+    feature_matrix = feature_df.as_matrix()
     db.close()
     return feature_matrix,feature_list
 
