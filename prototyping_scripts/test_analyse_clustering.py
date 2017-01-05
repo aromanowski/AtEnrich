@@ -17,3 +17,10 @@ FR_df.loc['chen2014_phyA_induced',85]
 method = 'FE'
 FR_df = analyse_clustering(cData,db_id,method=method,feature_list=feature_list,excluded_features=None,cluster_indices=cluster_indices)
 FR_df.loc['chen2014_phyA_induced',85]
+
+feature_list = ['chen2014_phyA_induced','chen2014_phyA_chip_seq']
+feature_combinations = [('chen2014_phyA_induced','chen2014_phyA_chip_seq')]
+
+method = 'pval'
+FR_df = analyse_clustering(cData,db_id,method=method,feature_list=feature_list,excluded_features=None,cluster_indices=cluster_indices,feature_combinations=feature_combinations)
+FR_df.loc['chen2014_phyA_induced+chen2014_phyA_chip_seq',85]

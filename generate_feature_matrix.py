@@ -41,8 +41,9 @@ def generate_feature_df(genes_of_interest,feature_list,excluded_features,db_id):
     db.close()
     return feature_df
 
-def generate_feature_matrix(genes_of_interest,feature_list,excluded_features,db_id):
+def generate_feature_matrix(genes_of_interest,feature_list,excluded_features,db_id,feature_combinations):
     feature_df = generate_feature_df(genes_of_interest,feature_list,excluded_features,db_id)
+    feature_df = add_combined_features(feature_df,feature_combinations)
     feature_list = [x for x in feature_df.columns]
     return feature_df.as_matrix(),feature_list
 
