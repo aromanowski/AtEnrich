@@ -47,6 +47,8 @@ def generate_feature_matrix(genes_of_interest,feature_list,excluded_features,db_
     return feature_df.as_matrix(),feature_list
 
 def add_combined_features(feature_df,list_of_combinations):
+    '''Add a new feature to a feature_df, that is the intersection of two or
+    more existing features'''
     nG = len(feature_df.index)
     for combination in list_of_combinations:
         new_feature_name = '+'.join(combination)
