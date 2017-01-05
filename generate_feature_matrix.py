@@ -55,8 +55,6 @@ def add_combined_features(feature_df,list_of_combinations):
         new_feature_name = '+'.join(combination)
         binary_feature_vector = np.array([1 for _ in range(nG)])
         for feature in combination:
-            print np.array(feature_df[feature])
-            print binary_feature_vector
             binary_feature_vector = np.multiply(binary_feature_vector,feature_df[feature].as_matrix())
         feature_df[new_feature_name] = binary_feature_vector
     return feature_df
