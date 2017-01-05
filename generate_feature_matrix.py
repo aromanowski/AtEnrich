@@ -4,7 +4,7 @@ import pandas as pd
 import json
 import sqlite3
 
-def generate_feature_matrix(genes_of_interest,feature_list,excluded_features,db_id):
+def generate_feature_df(genes_of_interest,feature_list,excluded_features,db_id):
     
     with open(os.path.join(os.path.dirname(__file__),'db_config.json'), 'r') as f:
         db_config = json.load(f)
@@ -38,10 +38,13 @@ def generate_feature_matrix(genes_of_interest,feature_list,excluded_features,db_
         binary_feature_vector = [int(x in returned_gene_list) for x in genes_of_interest]
         feature_df[feature_name] = binary_feature_vector
     
-    feature_matrix = feature_df.as_matrix()
     db.close()
-    return feature_matrix,feature_list
+    return feature_df
 
+def generate_feature_matrix(genes_of_interest,feature_list,excluded_features,db_id):
+    feature_df = generate_feature_df(genes_of_interest,feature_list,excluded_features,db_id)
+    feature_list = [x for x in feature_df.columns]
+    return feature_df.as_matrix(),feature_list
 
 def query_database(sql_query,list_name,db_cursor):
     db_cursor.execute(sql_query,[list_name])
