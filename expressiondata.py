@@ -26,6 +26,8 @@ class ExpressionData:
     """
 
     def __init__(self,data_dict,sim_fcn=lambda x,y: scipy.stats.pearsonr(x,y)[0],weight_dict=None):
+        #Assert same keys for data_dict and weight_dict
+        assert(set(weight_dict)==set(data_dict))
         self._data_dict = data_dict
         self.sim_fcn = sim_fcn
         self.similarity_matrix = None
