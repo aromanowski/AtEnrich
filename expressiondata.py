@@ -45,7 +45,7 @@ class ExpressionData:
         assert(all([x>=0 for x in self.weight_dict.values()]))
 
     def __getitem__(self, key):
-        return self.data_dict[key]
+        return self._data_dict[key]
 
 
     def _set_default_weights(self):
