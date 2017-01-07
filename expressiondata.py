@@ -36,6 +36,7 @@ class ExpressionData:
             self._set_default_weights()
         else:
             #Normalise input weights
+            self.weight_dict = weight_dict
             self._normalise_weights()
             self._using_default_weights = False
         
