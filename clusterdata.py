@@ -75,6 +75,14 @@ class ClusterData:
     
     def keys(self):
         return self.data.keys()
+    
+    def to_file(self,filename,sep='\t'):
+        '''Print list of gene names and cluster labels to a file.'''
+        with open(filename,'w') as f:
+            f.write(sep.join(['locus_id','cluster_label'])+'\n')
+            for x,y in zip(self['gene_list'],self['labels']):
+                f.write(sep.join([x,str(y)])+'\n')            
+                
 
 if __name__ == "__main__":
     import doctest
