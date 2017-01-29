@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import click
 
 @click.command()
