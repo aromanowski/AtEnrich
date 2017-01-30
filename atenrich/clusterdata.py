@@ -17,16 +17,9 @@ class ClusterData:
     6
     """
     
-    _required_keys = [u'datasets',
-    u'description',
+    _required_keys = [
     u'labels',
-    u'cluster_gene_lists',
-    u'cluster_method',
-    u'cluster_centers',
-    u'cluster_parameters',
-    u'gene_list',
-    u'label_set',
-    u'cluster_gene_lists']
+    u'gene_list']
     
     def __init__(self,data=None):
         if data is None:
