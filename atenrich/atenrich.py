@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-import click,calculate_enrichment
+import click
+import calculate_enrichment
+from generate_feature_matrix import generate_feature_matrix
 import pandas as pd
 
 @click.command()
@@ -25,15 +27,18 @@ def main(input,output,mode,header):
     #First column is always the background gene list    
     background_gene_list = [x[0] for x in lines]
 
+    #generate feature matrix for all genes
+    feature_matrix,feature_list = generate_feature_matrix(background_gene_list,db_id)
+
     if mode=='cluster':
         #Second column is a list of integer cluster labels
         cluster_labels = [int(x[1]) for x in lines]
-        pval_df,FE_df = calculate_enrichment.calculate_enrichment(cluster_labels,mode,background_gene_list,db_id,cluster_indices=None)
+        pval_df,FE_df = calculate_enrichment.cluster_enrichment(cluster_labels,feature_matrix,feature_list,cluster_indices=None)
     elif mode=='list':
         #Second column is a subset of gene ids
         gene_list = [x[1] for x in lines if len(x)==2]
         assert(len(set(background_gene_list)&set(gene_list))==len(set(gene_list)))
-        pval_df,FE_df = calculate_enrichment.calculate_enrichment(gene_list,mode,background_gene_list,db_id,cluster_indices=None)
+        pval_df,FE_df = calculate_enrichment.list_enrichment(gene_list,feature_matrix,feature_list)
     
 
     #output to file

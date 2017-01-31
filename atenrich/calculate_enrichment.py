@@ -2,43 +2,6 @@ import numpy as np
 import pandas as pd
 from convert_clustering_to_classification import convert_clustering_to_classification
 import rank_features
-from generate_feature_matrix import generate_feature_matrix
-
-def calculate_enrichment(input_data,mode,background_gene_list,db_id,cluster_indices=None):
-    """Generate enrichment statistics for a given set of clusters.
-    
-    >>> from GAFER import analyse_clustering,ClusterData
-    >>> import os
-    >>> import inspect
-    >>> 
-    >>> main_dir = os.path.dirname(inspect.getfile(analyse_clustering))
-    >>> data_dir = os.path.join(main_dir,'tests','test_data_files')
-    >>> clustering_file_location = os.path.join(data_dir,'diurnal_clustering_300916.json')
-    >>> cData = ClusterData.from_json(clustering_file_location)
-    >>> db_id = 'GeneListDB'
-    >>> cluster_indices = [85]
-    >>> feature_list = ['chen2014_phyA_induced']
-    >>> 
-    >>> method = 'pval'
-    >>> FR_df = analyse_clustering(cData,db_id,method=method,feature_list=feature_list,excluded_features=None,cluster_indices=cluster_indices)
-    >>> FR_df.loc['chen2014_phyA_induced',85]
-    23.982050404665358
-    >>> method = 'FE'
-    >>> FR_df = analyse_clustering(cData,db_id,method=method,feature_list=feature_list,excluded_features=None,cluster_indices=cluster_indices)
-    >>> FR_df.loc['chen2014_phyA_induced',85]
-    4.0285602503912354
-    """
-
-    #generate feature matrix
-    feature_matrix,feature_list = generate_feature_matrix(background_gene_list,db_id)
-
-    if mode=='cluster':
-        cluster_labels = input_data
-        pval_df,FE_df = cluster_enrichment(cluster_labels,feature_matrix,feature_list,cluster_indices)
-    
-    return pval_df,FE_df
-
-
 
 def cluster_enrichment(cluster_labels,feature_matrix,feature_list,cluster_indices):
 
