@@ -4,7 +4,7 @@ from convert_clustering_to_classification import convert_clustering_to_classific
 import rank_features
 from generate_feature_matrix import generate_feature_matrix
 
-def analyse_clustering(cData,db_id,cluster_indices=None):
+def calculate_enrichment(input_data,mode,background_gene_list,db_id,cluster_indices=None):
     """Generate enrichment statistics for a given set of clusters.
     
     >>> from GAFER import analyse_clustering,ClusterData
@@ -28,19 +28,27 @@ def analyse_clustering(cData,db_id,cluster_indices=None):
     >>> FR_df.loc['chen2014_phyA_induced',85]
     4.0285602503912354
     """
+
+    #generate feature matrix
+    feature_matrix,feature_list = generate_feature_matrix(background_gene_list,db_id)
+
+    if mode=='cluster':
+        cluster_labels = input_data
+        pval_df,FE_df = cluster_enrichment(cluster_labels,feature_matrix,feature_list,cluster_indices)
     
-    genes_of_interest = cData['gene_list']
-    cluster_list = cData['labels']
-    
+    return pval_df,FE_df
+
+
+
+def cluster_enrichment(cluster_labels,feature_matrix,feature_list,cluster_indices):
+
     if not cluster_indices:
         #use default - analyse all clusters
-        cluster_indices = list(set(cluster_list))
+        cluster_indices = list(set(cluster_labels))
     
     #get a binary classification vector for each cluster
-    clustering_classifications = convert_clustering_to_classification(cluster_list)
+    clustering_classifications = convert_clustering_to_classification(cluster_labels)
     
-    #generate feature matrix
-    feature_matrix,feature_list = generate_feature_matrix(genes_of_interest,db_id)
     
     pval_df = pd.DataFrame(index=feature_list,columns=cluster_indices)
     FE_df = pd.DataFrame(index=feature_list,columns=cluster_indices)
@@ -53,7 +61,7 @@ def analyse_clustering(cData,db_id,cluster_indices=None):
 
         FE = rank_features.FE(classification,feature_matrix)
         FE_df[cluster_idx] = pd.Series(FE,index=feature_list)
-        
+
     return pval_df,FE_df
 
 if __name__ == "__main__":
