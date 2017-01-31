@@ -42,25 +42,19 @@ def analyse_clustering(cData,db_id,method='pval',feature_list=None,excluded_feat
     #generate feature matrix
     feature_matrix,feature_list = generate_feature_matrix(genes_of_interest,feature_list,excluded_features,db_id,feature_combinations)
     
-    FR_df = pd.DataFrame(index=feature_list,columns=cluster_indices)
+    pval_df = pd.DataFrame(index=feature_list,columns=cluster_indices)
+    FE_df = pd.DataFrame(index=feature_list,columns=cluster_indices)
     
     for cluster_idx in cluster_indices:
         classification = clustering_classifications[cluster_idx]
-        if method=='RF':
-            importances,std,indices = rank_features.random_forest(genes_of_interest,classification,
-                                                    feature_matrix,
-                                                    n_estimators=1200,
-                                                    max_features=7,
-                                                    max_depth=7)
-            FR_df[cluster_idx] = pd.Series(importances,index=feature_list)
-        elif method=='pval':
-            pvals = rank_features.hypergeometric(classification,feature_matrix)
-            FR_df[cluster_idx] = pd.Series(-np.log10(pvals),index=feature_list)
-        elif method=='FE':
-            FE = rank_features.FE(classification,feature_matrix)
-            FR_df[cluster_idx] = pd.Series(FE,index=feature_list)
         
-    return FR_df
+        pvals = rank_features.hypergeometric(classification,feature_matrix)
+        pval_df[cluster_idx] = pd.Series(-np.log10(pvals),index=feature_list)
+
+        FE = rank_features.FE(classification,feature_matrix)
+        FE_df[cluster_idx] = pd.Series(FE,index=feature_list)
+        
+    return pval_df,FE_df
 
 if __name__ == "__main__":
     import doctest
