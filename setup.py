@@ -6,4 +6,6 @@ setup(
       packages=['atenrich'],
       package_dir={'atenrich': 'atenrich'},
       package_data={'atenrich': ['data/db/GeneListDB.db','data/config/db_config.json']},
+      install_requires=['Click','numpy','scipy','pandas'],
+      scripts='atenrich/atenrich.py',
 )
