@@ -47,18 +47,6 @@ def generate_feature_matrix(genes_of_interest,db_id):
     feature_list = [x for x in feature_df.columns]
     return feature_df.as_matrix(),feature_list
 
-def add_combined_features(feature_df,list_of_combinations):
-    '''Add a new feature to a feature_df, that is the intersection of two or
-    more existing features'''
-    nG = len(feature_df.index)
-    for combination in list_of_combinations:
-        new_feature_name = '+'.join(combination)
-        binary_feature_vector = np.array([1 for _ in range(nG)])
-        for feature in combination:
-            binary_feature_vector = np.multiply(binary_feature_vector,feature_df[feature].as_matrix())
-        feature_df[new_feature_name] = binary_feature_vector
-    return feature_df
-
 def query_database(sql_query,list_name,db_cursor):
     db_cursor.execute(sql_query,[list_name])
     result = db_cursor.fetchall()
