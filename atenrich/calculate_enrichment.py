@@ -27,6 +27,21 @@ def cluster_enrichment(cluster_labels,feature_matrix,feature_list,cluster_indice
 
     return pval_df,FE_df
 
+def list_enrichment(gene_list,background_gene_list,feature_matrix,feature_list):
+
+    #get a binary classification vector for the list
+    classification = [int(x in gene_list) for x in background_gene_list]
+    
+    pval_df = pd.DataFrame(index=feature_list,columns=['pval_enrichment'])
+    pvals = rank_features.hypergeometric(classification,feature_matrix)
+    pval_df['pval_enrichment'] = pd.Series(-np.log10(pvals),index=feature_list)
+
+    FE_df = pd.DataFrame(index=feature_list,columns=['fold_enrichment'])
+    FE = rank_features.FE(classification,feature_matrix)
+    FE_df['fold_enrichment'] = pd.Series(FE,index=feature_list)
+    
+    return pval_df,FE_df
+
 if __name__ == "__main__":
     import doctest
     doctest.testmod()

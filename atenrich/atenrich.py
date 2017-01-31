@@ -14,8 +14,6 @@ def main(input,output,mode,header):
     """Dummy function that prints arguments to console and copies input to output."""
     click.echo("AtEnrich running in {0} mode.".format(mode))
 
-    db_id = 'GeneListDB'
-
     if header:
         offset = 1
     else:
@@ -28,6 +26,7 @@ def main(input,output,mode,header):
     background_gene_list = [x[0] for x in lines]
 
     #generate feature matrix for all genes
+    db_id = 'GeneListDB'
     feature_matrix,feature_list = generate_feature_matrix(background_gene_list,db_id)
 
     if mode=='cluster':
@@ -38,8 +37,7 @@ def main(input,output,mode,header):
         #Second column is a subset of gene ids
         gene_list = [x[1] for x in lines if len(x)==2]
         assert(len(set(background_gene_list)&set(gene_list))==len(set(gene_list)))
-        pval_df,FE_df = calculate_enrichment.list_enrichment(gene_list,feature_matrix,feature_list)
-    
+        pval_df,FE_df = calculate_enrichment.list_enrichment(gene_list,background_gene_list,feature_matrix,feature_list)
 
     #output to file
     pval_df.to_csv(click.format_filename(output+'_pval.txt'),sep='\t')
