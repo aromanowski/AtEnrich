@@ -3,15 +3,19 @@ import numpy as np
 import pandas as pd
 import json
 import sqlite3
+import pkg_resources
 
 def generate_feature_df(genes_of_interest,feature_list,excluded_features,db_id):
     
-    with open(os.path.join(os.path.dirname(__file__),'db_config.json'), 'r') as f:
+    config_filename = pkg_resources.resource_filename('atenrich','data/config/db_config.json')
+    with open(config_filename, 'r') as f:
         db_config = json.load(f)
     feature_id_column = db_config[db_id]['feature_id_column']
     target_id_column = db_config[db_id]['target_id_column']
     table_name = db_config[db_id]['table_name']
-    db = sqlite3.connect(db_config[db_id]['database_file'])
+    db_filename = pkg_resources.resource_filename('atenrich','data/db/GeneListDB.db')
+#    db = sqlite3.connect(db_config[db_id]['database_file'])
+    db = sqlite3.connect(db_filename)
     db_cursor = db.cursor()
 
     #protect against SQL injection
