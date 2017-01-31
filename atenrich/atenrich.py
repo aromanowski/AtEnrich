@@ -22,7 +22,7 @@ def main(input,output,mode,header):
     cData['gene_list'] = input_df.ix[:,0]
     cData['labels'] = input_df.ix[:,1]
     db_id = 'GeneListDB'
-    pval_df,FE_df = analyse_clustering.analyse_clustering(cData,db_id,method='pval',feature_list=None,excluded_features=None,cluster_indices=None,feature_combinations=[])
+    pval_df,FE_df = analyse_clustering.analyse_clustering(cData,db_id,cluster_indices=None)
     pval_df.to_csv(click.format_filename(output+'_pval.txt'),sep='\t')
     FE_df.to_csv(click.format_filename(output+'_FE.txt'),sep='\t')
 

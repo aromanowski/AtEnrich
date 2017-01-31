@@ -4,7 +4,7 @@ from convert_clustering_to_classification import convert_clustering_to_classific
 import rank_features
 from generate_feature_matrix import generate_feature_matrix
 
-def analyse_clustering(cData,db_id,method='pval',feature_list=None,excluded_features=None,cluster_indices=None,feature_combinations=[]):
+def analyse_clustering(cData,db_id,cluster_indices=None):
     """Generate enrichment statistics for a given set of clusters.
     
     >>> from GAFER import analyse_clustering,ClusterData
@@ -40,7 +40,7 @@ def analyse_clustering(cData,db_id,method='pval',feature_list=None,excluded_feat
     clustering_classifications = convert_clustering_to_classification(cluster_list)
     
     #generate feature matrix
-    feature_matrix,feature_list = generate_feature_matrix(genes_of_interest,feature_list,excluded_features,db_id,feature_combinations)
+    feature_matrix,feature_list = generate_feature_matrix(genes_of_interest,db_id)
     
     pval_df = pd.DataFrame(index=feature_list,columns=cluster_indices)
     FE_df = pd.DataFrame(index=feature_list,columns=cluster_indices)

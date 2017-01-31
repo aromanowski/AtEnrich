@@ -5,7 +5,7 @@ import json
 import sqlite3
 import pkg_resources
 
-def generate_feature_df(genes_of_interest,feature_list,excluded_features,db_id):
+def generate_feature_df(genes_of_interest,db_id):
     
     config_filename = pkg_resources.resource_filename('atenrich','data/config/db_config.json')
     with open(config_filename, 'r') as f:
@@ -23,13 +23,10 @@ def generate_feature_df(genes_of_interest,feature_list,excluded_features,db_id):
     feature_id_column = scrub(feature_id_column)
     target_id_column = scrub(target_id_column)
     
-    if not feature_list:
-        #create default feature list
-        sql_query = "SELECT {0} FROM {1} GROUP BY {0};".format(feature_id_column,table_name)
-        db_cursor.execute(sql_query)
-        feature_list = [x[0] for x in db_cursor.fetchall()]
-    if excluded_features:
-        feature_list = [x for x in feature_list if ~any([x==y for y in excluded_features])]
+    #create default feature list
+    sql_query = "SELECT {0} FROM {1} GROUP BY {0};".format(feature_id_column,table_name)
+    db_cursor.execute(sql_query)
+    feature_list = [x[0] for x in db_cursor.fetchall()]
 
     #generate the accompanying feature matrix for all genes in the gene list
     sql_query = """SELECT {0} FROM {1} WHERE {2}=?;""".format(target_id_column,table_name,feature_id_column)
@@ -45,9 +42,8 @@ def generate_feature_df(genes_of_interest,feature_list,excluded_features,db_id):
     db.close()
     return feature_df
 
-def generate_feature_matrix(genes_of_interest,feature_list,excluded_features,db_id,feature_combinations):
-    feature_df = generate_feature_df(genes_of_interest,feature_list,excluded_features,db_id)
-    feature_df = add_combined_features(feature_df,feature_combinations)
+def generate_feature_matrix(genes_of_interest,db_id):
+    feature_df = generate_feature_df(genes_of_interest,db_id)
     feature_list = [x for x in feature_df.columns]
     return feature_df.as_matrix(),feature_list
 
