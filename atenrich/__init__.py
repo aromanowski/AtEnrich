@@ -1,6 +1,2 @@
-from analyse_clustering import analyse_clustering
 from generate_feature_matrix import generate_feature_matrix,generate_feature_df
-from analyse_gene_list import analyse_gene_list
-
-from clusterdata import ClusterData
-from expressiondata import ExpressionData
+from calculate_enrichment import cluster_enrichment,list_enrichment

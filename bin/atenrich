@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 import click
-import calculate_enrichment
-from generate_feature_matrix import generate_feature_matrix
-import pandas as pd
+from atenrich import calculate_enrichment
+from atenrich import generate_feature_matrix
 
 @click.command()
 @click.option("--mode",default='cluster', help="Enrichment mode (list or cluster).")
