@@ -19,10 +19,9 @@ pip install atenrich
 AtEnrich can be run from the command line either for enrichment of a single gene list against a background gene list, or enrichment across a set of clusters. In list mode:
 
 ```
-example
+atenrich --mode list input_filename output_string
 ```
-
-Here, 'list_filename' is a plaintext file of the form:
+Here, the 'output_string' denotes the prefix used for files - the output files are then 'output_string_pvals.txt' and 'output_string_FE.txt'. 'list_filename' is a plaintext file of the form:
 
 ```
 background_locus_id_0 list_of_interest_locus_id_0
@@ -33,10 +32,11 @@ background_locus_id_3 list_of_interest_locus_id_3
 ```
 Locus identifiers are given by the Arabidopsis Genome Initiative (AGI) names (e.g. 'AT1G09570' for PHYA). Tabs separate the background gene list (left-hand column) and the list of interest (right-hand column). The genes of interest must be a subset of the background gene list.
 
-In cluster mode:
+
+In cluster mode, enrichment across all clusters can be evaluated:
 
 ```
-atenrich --mode cluster example_data/seaton2017_all_clusters_atenrich_input.csv example_data/cluster_mode_output
+atenrich --mode cluster input_filename output_string
 ```
 
 Here, 'cluster_filename' is a plaintext file of the form:
@@ -48,6 +48,21 @@ locus_id_2  cluster_label_for_locus_id_2
 locus_id_3  cluster_label_for_locus_id_3
 ...         ...
 ```
+
+## Worked example
+
+For the clustering of genes analysed in Seaton et al, 2017:
+
+```
+atenrich --mode cluster example_data/seaton2017_all_clusters_atenrich_input.csv example_data/cluster_mode_output
+```
+
+For just cluster 85 of this clustering:
+
+```
+atenrich --mode list example_data/seaton2017_cluster_85_atenrich_input.csv example_data/list_mode_output
+```
+
 
 ## Authors
 
