@@ -16,14 +16,6 @@ Say what the step will be
 pip install atenrich
 ```
 
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
 ## Running AtEnrich
 
 AtEnrich can be run from the command line either for enrichment of a single gene list against a background gene list, or enrichment across a set of clusters. In list mode:
