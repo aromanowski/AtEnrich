@@ -8,9 +8,7 @@ This software requires the numpy, scipy, and pandas packages. These will be inst
 
 ### Installing
 
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
+The simplest way to install atenrich is from PyPI using pip:
 
 ```
 pip install atenrich
@@ -27,23 +25,29 @@ example
 Here, 'list_filename' is a plaintext file of the form:
 
 ```
-specification
+background_locus_id_0 list_of_interest_locus_id_0
+background_locus_id_1 list_of_interest_locus_id_1
+background_locus_id_2 list_of_interest_locus_id_2
+background_locus_id_3 list_of_interest_locus_id_3
+...                   ...
 ```
+Locus identifiers are given by the Arabidopsis Genome Initiative (AGI) names (e.g. 'AT1G09570' for PHYA). Tabs separate the background gene list (left-hand column) and the list of interest (right-hand column). The genes of interest must be a subset of the background gene list.
 
 In cluster mode:
 
 ```
-example
+atenrich --mode cluster example_data/seaton2017_all_clusters_atenrich_input.csv example_data/cluster_mode_output
 ```
 
 Here, 'cluster_filename' is a plaintext file of the form:
 
 ```
-specification
+locus_id_0  cluster_label_for_locus_id_0
+locus_id_1  cluster_label_for_locus_id_1
+locus_id_2  cluster_label_for_locus_id_2
+locus_id_3  cluster_label_for_locus_id_3
+...         ...
 ```
-
-The help documentation provides information on allowed inputs and options:
-
 
 ## Authors
 
