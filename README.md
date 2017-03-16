@@ -4,11 +4,11 @@ AtEnrich is a simple command-line tool for calculating enrichment of gene lists 
 
 ### Prerequisites
 
-This software requires the numpy, scipy, and pandas packages. These will be installed automatically through pip installation if not already installed.
+This software runs on Unix operating systems (tested on Linux (Ubuntu) and Mac OS). It requires python 2.7 with the numpy, scipy, and pandas packages. These will be installed automatically through pip installation if not already installed.
 
 ### Installing
 
-The simplest way to install atenrich is from PyPI using pip:
+The simplest way to install AtEnrich is from PyPI using pip:
 
 ```
 pip install atenrich
@@ -19,9 +19,9 @@ pip install atenrich
 AtEnrich can be run from the command line either for enrichment of a single gene list against a background gene list, or enrichment across a set of clusters. In list mode:
 
 ```
-atenrich --mode list input_filename output_string
+atenrich --mode list input_filename output_prefix
 ```
-Here, the 'output_string' denotes the prefix used for files - the output files are then 'output_string_pvals.txt' and 'output_string_FE.txt'. 'list_filename' is a plaintext file of the form:
+Here, the 'output_string' denotes the prefix used for files - the output files are then 'output_string_pvals.txt' and 'output_string_FE.txt'. 'list_filename' is a tab-delimited plaintext file of the form:
 
 ```
 background_locus_id_0 list_of_interest_locus_id_0
@@ -36,10 +36,10 @@ Locus identifiers are given by the Arabidopsis Genome Initiative (AGI) names (e.
 In cluster mode, enrichment across all clusters can be evaluated:
 
 ```
-atenrich --mode cluster input_filename output_string
+atenrich --mode cluster input_filename output_prefix
 ```
 
-Here, 'cluster_filename' is a plaintext file of the form:
+Here, 'cluster_filename' is a tab-delimited plaintext file of the form:
 
 ```
 locus_id_0  cluster_label_for_locus_id_0
