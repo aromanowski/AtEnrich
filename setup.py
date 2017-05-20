@@ -4,7 +4,7 @@ setup(
       name="atenrich",
       version="0.2",
       packages=['atenrich'],
-      package_data={'atenrich': ['data/genelists/']},
+      package_data={'atenrich': ['data/genelists/','data/genelists/*.genelist']},
       install_requires=['Click','numpy','scipy','pandas'],
       scripts=['bin/atenrich'],
 )
