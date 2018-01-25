@@ -2,11 +2,10 @@ import os.path
 import numpy as np
 from glob import glob
 import pandas as pd
-import pkg_resources
 
 def generate_feature_df(genes_of_interest,db_id):
     
-    genelist_path = pkg_resources.resource_filename('atenrich','data/genelists/')
+    genelist_path = os.path.join(os.path.dirname(__file__),'data','genelists')
     files = [y for x in os.walk(genelist_path) for y in glob(os.path.join(x[0], '*.genelist'))]
 
     feature_df = pd.DataFrame(index=genes_of_interest)
