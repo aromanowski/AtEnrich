@@ -69,10 +69,6 @@ For just cluster 85 of this clustering:
 atenrich --mode list example_data/seaton2017_cluster_85_atenrich_input.csv example_data/list_mode_output
 ```
 
-## GeneListDB
-
-The gene list database file is an SQLite relational database, stored in the file: atenrich/data/db/GeneListDB.db. The tables in this file can be browsed using a SQLite file browser such as Sqliteman. The database file can be changed to add user-supplied gene lists using scripts from https://github.com/danielseaton/GeneListDB.
-
 
 ## Authors
 
