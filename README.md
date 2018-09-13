@@ -69,6 +69,9 @@ For just cluster 85 of this clustering:
 atenrich --mode list example_data/seaton2017_cluster_85_atenrich_input.csv example_data/list_mode_output
 ```
 
+## Getting the gene list data
+
+The curated gene lists, which could not be supplied as part of the supplemental material, are supplied as part of the version of AtEnrich available to download from PyPI (https://pypi.org/project/atenrich/, in the atenrich/data/genelists folder).
 
 ## Authors
 
@@ -76,7 +79,7 @@ atenrich --mode list example_data/seaton2017_cluster_85_atenrich_input.csv examp
 
 ## License
 
-
+This software is licensed under the Apache 2.0 license (see LICENSE.txt).
 
 ## Acknowledgments
 
