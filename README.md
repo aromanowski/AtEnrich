@@ -83,3 +83,4 @@ This software is licensed under the Apache 2.0 license (see LICENSE.txt).
 
 ## Acknowledgments
 
+Thanks to members of the Halliday Lab for assistance with testing.
